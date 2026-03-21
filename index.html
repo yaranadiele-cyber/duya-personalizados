@@ -302,10 +302,7 @@ footer{background:var(--text);color:rgba(255,255,255,.7);padding:60px 48px 40px}
     </ul></div>
   </div>
   <div class="ft-bot">
-    <div style="display:flex;flex-direction:column;gap:6px">
-      <span id="ftCopy">© 2026 Duya Personalizados. Feito com 💕</span>
-      <span style="font-size:12px;color:rgba(255,255,255,.4)">Site desenvolvido por <a href="https://instagram.com/Duya.personalizados" style="color:var(--pink);text-decoration:none;font-weight:500">Nadiele Yara</a> ✨</span>
-    </div>
+    <span id="ftCopy">© 2026 Duya Personalizados. Feito com 💕</span>
     <a href="#" class="ft-ig" id="ftIgBot">@Duya.personalizados</a>
   </div>
 </footer>
@@ -556,11 +553,11 @@ async function uploadToStorage(file, path) {
 function cfg(key, def = '') { return CFG[key] || def; }
 async function setCfg(key, value) {
   CFG[key] = value;
-  await sbUpsert('site_config', { key, value });
+  await sbUpsert('duya_config', { key, value });
 }
 async function setCfgBatch(pairs) {
   for (const [key, value] of pairs) { CFG[key] = value; }
-  await sbUpsert('site_config', pairs.map(([key, value]) => ({ key, value })));
+  await sbUpsert('duya_config', pairs.map(([key, value]) => ({ key, value })));
 }
 
 // ══════════════════════════════════════
@@ -569,10 +566,10 @@ async function setCfgBatch(pairs) {
 async function loadAll() {
   try {
     const [cfgRows, svcs, gal, tstis] = await Promise.all([
-      sbGet('site_config'),
-      sbGet('services', 'order_index.asc,created_at.asc'),
-      sbGet('gallery', 'order_index.asc,created_at.asc'),
-      sbGet('testimonials', 'order_index.asc,created_at.asc')
+      sbGet('duya_config'),
+      sbGet('duya_services', 'order_index.asc,created_at.asc'),
+      sbGet('duya_gallery', 'order_index.asc,created_at.asc'),
+      sbGet('duya_testimonials', 'order_index.asc,created_at.asc')
     ]);
     CFG = Object.fromEntries(cfgRows.map(r => [r.key, r.value]));
     SVCS = svcs;
@@ -970,7 +967,7 @@ async function saveSvc(id) {
   const s = SVCS.find(x => x.id === id); if (!s) return;
   const btn = event.target; btn.textContent = '⏳...'; btn.disabled = true;
   try {
-    await sbUpdate('services', id, {
+    await sbUpdate('duya_services', id, {
       emoji: s.emoji, badge: s.badge, title: s.title,
       description: s.description, price: s.price,
       period: s.period, ribbon: s.ribbon, image_url: s.image_url
@@ -983,7 +980,7 @@ async function saveSvc(id) {
 async function addSvc() {
   const btn = event.target; btn.textContent = '⏳...'; btn.disabled = true;
   try {
-    const rows = await sbInsert('services', { emoji: '🎁', badge: 'Novo', title: 'Novo Serviço', description: 'Descrição do serviço.', price: 'R$ 0', period: 'por unidade', ribbon: '', image_url: '', order_index: SVCS.length });
+    const rows = await sbInsert('duya_services', { emoji: '🎁', badge: 'Novo', title: 'Novo Serviço', description: 'Descrição do serviço.', price: 'R$ 0', period: 'por unidade', ribbon: '', image_url: '', order_index: SVCS.length });
     SVCS.push(rows[0]);
     rAdmSvc();
     toast('✅ Serviço adicionado!', true);
@@ -994,7 +991,7 @@ async function addSvc() {
 async function rmSvc(id) {
   if (!confirm('Remover este serviço?')) return;
   try {
-    await sbDelete('services', id);
+    await sbDelete('duya_services', id);
     SVCS = SVCS.filter(x => x.id !== id);
     rAdmSvc(); toast('🗑️ Serviço removido');
   } catch (err) { toast('❌ Erro: ' + err.message); }
@@ -1019,7 +1016,7 @@ async function addGalImgs(e) {
     for (const file of files) {
       const path = `gallery/${Date.now()}-${Math.random().toString(36).substr(2, 6)}.${file.name.split('.').pop()}`;
       const url = await uploadToStorage(file, path);
-      const rows = await sbInsert('gallery', { image_url: url, order_index: GAL.length });
+      const rows = await sbInsert('duya_gallery', { image_url: url, order_index: GAL.length });
       GAL.push(rows[0]);
     }
     rAdmGal();
@@ -1029,7 +1026,7 @@ async function addGalImgs(e) {
 
 async function rmGal(id) {
   try {
-    await sbDelete('gallery', id);
+    await sbDelete('duya_gallery', id);
     GAL = GAL.filter(x => x.id !== id);
     rAdmGal(); toast('🗑️ Foto removida');
   } catch (err) { toast('❌ Erro: ' + err.message); }
@@ -1092,7 +1089,7 @@ async function saveTsti(id) {
   const t = TSTIS.find(x => x.id === id); if (!t) return;
   const btn = event.target; btn.textContent = '⏳...'; btn.disabled = true;
   try {
-    await sbUpdate('testimonials', id, { name: t.name, subtitle: t.subtitle, text: t.text, stars: t.stars, image_url: t.image_url });
+    await sbUpdate('duya_testimonials', id, { name: t.name, subtitle: t.subtitle, text: t.text, stars: t.stars, image_url: t.image_url });
     toast('✅ Depoimento salvo!', true);
   } catch (err) { toast('❌ Erro: ' + err.message); }
   btn.textContent = '💾 Salvar no Supabase'; btn.disabled = false;
@@ -1101,7 +1098,7 @@ async function saveTsti(id) {
 async function addTsti() {
   const btn = event.target; btn.textContent = '⏳...'; btn.disabled = true;
   try {
-    const rows = await sbInsert('testimonials', { name: '', subtitle: '', text: '', stars: 5, image_url: '', order_index: TSTIS.length });
+    const rows = await sbInsert('duya_testimonials', { name: '', subtitle: '', text: '', stars: 5, image_url: '', order_index: TSTIS.length });
     TSTIS.push(rows[0]);
     rAdmTsti();
     toast('✅ Depoimento adicionado!', true);
@@ -1112,7 +1109,7 @@ async function addTsti() {
 async function rmTsti(id) {
   if (!confirm('Remover este depoimento?')) return;
   try {
-    await sbDelete('testimonials', id);
+    await sbDelete('duya_testimonials', id);
     TSTIS = TSTIS.filter(x => x.id !== id);
     rAdmTsti(); toast('🗑️ Removido');
   } catch (err) { toast('❌ Erro: ' + err.message); }
