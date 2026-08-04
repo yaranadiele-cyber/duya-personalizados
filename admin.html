@@ -168,9 +168,9 @@ footer{background:var(--text);color:rgba(255,255,255,.7);padding:60px 48px 40px}
   <div class="mbox">
     <div class="m-icon">🔐</div>
     <h2 class="m-tit">Painel Admin</h2>
-    <p class="m-sub">Duya Personalizados — entre com seu e-mail e senha</p>
+    <p class="m-sub">Duya Personalizados — entre com seu usuário e senha</p>
     <form onsubmit="doLogin(event)">
-      <div class="fg"><label class="fl">Usuário</label><input type="email" class="fi" id="lUser" placeholder="yaranadiele@gmail.com" required autocomplete="username"></div>
+      <div class="fg"><label class="fl">Usuário</label><input type="text" class="fi" id="lUser" placeholder="admin" required autocomplete="username"></div>
       <div class="fg" style="margin-top:12px"><label class="fl">Senha</label><input type="password" class="fi" id="lPass" placeholder="••••••••" required autocomplete="current-password"></div>
       <button type="submit" class="fsub" style="margin-top:22px" id="loginBtn">Entrar ✨</button>
       <p id="loginErr" style="color:#c0392b;font-size:13px;margin-top:12px;text-align:center"></p>
@@ -330,7 +330,7 @@ footer{background:var(--text);color:rgba(255,255,255,.7);padding:60px 48px 40px}
 const SB_URL = 'https://wtwkrelkccycnnimlibm.supabase.co';
 const SB_KEY = 'sb_publishable_33PvAjwPAeoJCPgPaaYGoA_YFu2AKwf';
 const BUCKET = 'duya';
-const LOGIN_DOMAIN = ''; // login usa o e-mail completo informado pelo administrador
+const LOGIN_EMAIL = 'yaranadiele@gmail.com'; // e-mail cadastrado no Supabase Auth por trás do usuário "admin"
 
 // ── Session (real Supabase Auth) ──
 let SESSION = null; // { access_token, refresh_token, user }
@@ -359,7 +359,7 @@ async function doLogin(e) {
   btn.textContent = 'Entrando...'; btn.disabled = true;
   try {
     const username = document.getElementById('lUser').value.trim().toLowerCase();
-    const email = username;
+    const email = (username === 'admin' || username === '') ? LOGIN_EMAIL : username;
     const password = document.getElementById('lPass').value;
     const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=password`, {
       method: 'POST',
