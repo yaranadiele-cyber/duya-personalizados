@@ -161,8 +161,6 @@ footer{background:var(--text);color:rgba(255,255,255,.7);padding:60px 48px 40px}
 </head>
 <body>
 
-<body>
-
 <div class="toast" id="toast"></div>
 
 <!-- LOGIN SCREEN -->
@@ -172,7 +170,7 @@ footer{background:var(--text);color:rgba(255,255,255,.7);padding:60px 48px 40px}
     <h2 class="m-tit">Painel Admin</h2>
     <p class="m-sub">Duya Personalizados — entre com seu e-mail e senha</p>
     <form onsubmit="doLogin(event)">
-      <div class="fg"><label class="fl">Usuário</label><input type="text" class="fi" id="lUser" placeholder="admin" required autocomplete="username"></div>
+      <div class="fg"><label class="fl">Usuário</label><input type="email" class="fi" id="lUser" placeholder="yaranadiele@gmail.com" required autocomplete="username"></div>
       <div class="fg" style="margin-top:12px"><label class="fl">Senha</label><input type="password" class="fi" id="lPass" placeholder="••••••••" required autocomplete="current-password"></div>
       <button type="submit" class="fsub" style="margin-top:22px" id="loginBtn">Entrar ✨</button>
       <p id="loginErr" style="color:#c0392b;font-size:13px;margin-top:12px;text-align:center"></p>
@@ -329,10 +327,10 @@ footer{background:var(--text);color:rgba(255,255,255,.7);padding:60px 48px 40px}
 // ══════════════════════════════════════
 // SUPABASE CONFIG
 // ══════════════════════════════════════
-const SB_URL = 'https://ewjluhwsrfpjdxlapfcu.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3amx1aHdzcmZwamR4bGFwZmN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3ODIyOTMsImV4cCI6MjA4OTM1ODI5M30.A8ihF9o5pHMJ1i84mHiTcHs_o6_Yc7ZMlPOGFXqWgQo';
+const SB_URL = 'https://wtwkrelkccycnnimlibm.supabase.co';
+const SB_KEY = 'sb_publishable_33PvAjwPAeoJCPgPaaYGoA_YFu2AKwf';
 const BUCKET = 'duya';
-const LOGIN_DOMAIN = 'duya-admin.local'; // usuário digitado vira usuario@duya-admin.local por baixo dos panos
+const LOGIN_DOMAIN = ''; // login usa o e-mail completo informado pelo administrador
 
 // ── Session (real Supabase Auth) ──
 let SESSION = null; // { access_token, refresh_token, user }
@@ -361,7 +359,7 @@ async function doLogin(e) {
   btn.textContent = 'Entrando...'; btn.disabled = true;
   try {
     const username = document.getElementById('lUser').value.trim().toLowerCase();
-    const email = `${username}@${LOGIN_DOMAIN}`;
+    const email = username;
     const password = document.getElementById('lPass').value;
     const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=password`, {
       method: 'POST',
