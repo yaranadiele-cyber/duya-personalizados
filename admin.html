@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin — Duya Personalizados</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#f4a7b9;--pink-light:#fde8ee;--pink-deep:#e87fa0;--purple:#b08fd6;--purple-light:#ede0f8;--purple-deep:#8a5cbf;--cream:#fffbf4;--cream2:#fef6ee;--yellow:#f5d76e;--text:#3d2c3e;--text-soft:#7a6080;--shadow:0 8px 40px rgba(176,143,214,.13);--r:24px}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(255,251,244,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(240,180,200,.3)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-img{width:42px;height:42px;border-radius:50%;border:2px solid var(--pink);background:var(--pink-light);display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;flex-shrink:0}
+.nav-logo-img img{width:100%;height:100%;object-fit:cover}
+.nav-logo-text{font-family:'Dancing Script',cursive;font-size:22px;color:var(--purple-deep);font-weight:700}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{text-decoration:none;font-size:14px;font-weight:500;color:var(--text-soft);transition:color .2s}.nav-links a:hover{color:var(--purple-deep)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-wa-nav{display:flex;align-items:center;gap:7px;background:var(--purple-deep);color:#fff;text-decoration:none;padding:10px 22px;border-radius:50px;font-size:13px;font-weight:500;transition:all .3s;box-shadow:0 4px 16px rgba(138,92,191,.3)}.btn-wa-nav:hover{background:var(--pink-deep);transform:translateY(-1px)}
+.btn-admin-icon{width:36px;height:36px;background:var(--cream2);border:1.5px solid var(--pink);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:var(--text-soft);transition:all .2s;text-decoration:none}.btn-admin-icon:hover{background:var(--pink-light);border-color:var(--purple)}
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 48px 80px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--cream) 0%,var(--pink-light) 50%,var(--purple-light) 100%)}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.4;pointer-events:none}
+.b1{width:500px;height:500px;background:var(--pink);top:-100px;right:-100px;animation:f1 8s ease-in-out infinite}
+.b2{width:350px;height:350px;background:var(--purple);bottom:-50px;left:-80px;animation:f2 10s ease-in-out infinite}
+@keyframes f1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,30px)}}
+@keyframes f2{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
+.hd{position:absolute;pointer-events:none;font-size:28px;opacity:.5}
+.hd1{top:18%;left:8%;animation:spin 15s linear infinite}.hd2{bottom:20%;right:8%;animation:spin 20s linear infinite reverse}.hd3{top:30%;right:12%;font-size:18px;animation:f1 6s ease-in-out infinite}.hd4{bottom:35%;left:12%;font-size:18px;animation:f2 7s ease-in-out infinite}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.hero-content{text-align:center;max-width:700px;position:relative;z-index:1;animation:fadeUp .9s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--pink);border-radius:50px;padding:8px 18px;font-size:12px;font-weight:500;color:var(--purple-deep);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:28px}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:700;line-height:1.08;color:var(--text);margin-bottom:12px}
+.hero-title em{color:var(--purple-deep);font-style:italic}
+.hero-sub{font-size:1.1rem;color:var(--text-soft);line-height:1.7;max-width:520px;margin:20px auto 40px;font-weight:300}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-pri{background:linear-gradient(135deg,var(--purple-deep),var(--pink-deep));color:#fff;text-decoration:none;padding:16px 36px;border-radius:50px;font-size:15px;font-weight:500;box-shadow:0 8px 28px rgba(138,92,191,.35);transition:all .3s;display:inline-flex;align-items:center;gap:8px}.btn-pri:hover{transform:translateY(-3px)}
+.btn-sec{background:#fff;color:var(--purple-deep);text-decoration:none;padding:16px 36px;border-radius:50px;font-size:15px;font-weight:500;border:2px solid var(--purple-light);transition:all .3s;display:inline-flex;align-items:center;gap:8px}.btn-sec:hover{border-color:var(--purple-deep);background:var(--purple-light);transform:translateY(-3px)}
+section{padding:100px 48px;position:relative}
+.slbl{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--purple-deep);font-weight:600;margin-bottom:14px}.slbl::before,.slbl::after{content:'✦';font-size:8px;color:var(--pink-deep)}
+.stit{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;line-height:1.2;color:var(--text);margin-bottom:18px}.stit em{color:var(--purple-deep);font-style:italic}
+.sdsc{font-size:1rem;color:var(--text-soft);line-height:1.8;max-width:560px;font-weight:300}
+.sec-hdr{text-align:center;margin-bottom:64px}.sec-hdr .sdsc{margin:0 auto}
+#sobre{background:#fff;overflow:hidden}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1100px;margin:0 auto}
+.about-img-wrap{position:relative}
+.about-frame{width:100%;max-width:420px;aspect-ratio:1;border-radius:50%;overflow:hidden;border:6px solid var(--pink-light);box-shadow:0 20px 60px rgba(244,167,185,.3);position:relative;z-index:1;background:linear-gradient(135deg,var(--pink-light),var(--purple-light));display:flex;align-items:center;justify-content:center;font-size:80px}
+.about-frame img{width:100%;height:100%;object-fit:cover;display:block}
+.ab-y{position:absolute;width:120px;height:120px;background:var(--yellow);border-radius:50%;bottom:-20px;right:-10px;z-index:0;opacity:.7}
+.ab-p{position:absolute;width:80px;height:80px;background:var(--purple-light);border-radius:50%;top:-15px;left:-15px;z-index:0}
+.ab-fl{position:absolute;font-size:40px;top:-20px;right:20px;animation:f1 5s ease-in-out infinite}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.tag{background:var(--pink-light);color:var(--pink-deep);border-radius:50px;padding:8px 18px;font-size:13px;font-weight:500;border:1px solid rgba(244,167,185,.4)}
+.tag.p{background:var(--purple-light);color:var(--purple-deep);border-color:rgba(176,143,214,.3)}
+#servicos{background:linear-gradient(180deg,var(--cream) 0%,var(--pink-light) 100%)}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;max-width:1200px;margin:0 auto}
+.svc-card{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);transition:all .4s cubic-bezier(.34,1.56,.64,1);border:1.5px solid rgba(244,167,185,.2);position:relative}.svc-card:hover{transform:translateY(-8px) scale(1.01);box-shadow:0 20px 60px rgba(176,143,214,.22);border-color:var(--purple-light)}
+.svc-img{width:100%;height:200px;object-fit:cover;display:block}
+.svc-ph{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:56px;background:linear-gradient(135deg,var(--pink-light),var(--purple-light))}
+.svc-body{padding:28px}
+.svc-bdg{display:inline-block;background:var(--purple-light);color:var(--purple-deep);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:50px;margin-bottom:14px}
+.svc-tit{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.3}
+.svc-dsc{font-size:14px;color:var(--text-soft);line-height:1.7;margin-bottom:20px;font-weight:300}
+.svc-price{display:flex;align-items:baseline;gap:4px;margin-bottom:22px}
+.pf{font-size:12px;color:var(--text-soft)}.pv{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--purple-deep)}.pp{font-size:12px;color:var(--text-soft)}
+.btn-sol{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:linear-gradient(135deg,var(--purple-deep),var(--pink-deep));color:#fff;text-decoration:none;padding:14px;border-radius:14px;font-size:14px;font-weight:500;transition:all .3s;box-shadow:0 4px 16px rgba(138,92,191,.25);border:none;cursor:pointer}.btn-sol:hover{opacity:.9;transform:translateY(-2px)}
+.svc-rib{position:absolute;top:16px;right:16px;background:var(--yellow);color:var(--text);font-size:11px;font-weight:700;padding:5px 12px;border-radius:50px}
+#galeria{background:#fff}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1100px;margin:0 auto}
+.gal-item{border-radius:18px;overflow:hidden;position:relative;cursor:pointer;background:linear-gradient(135deg,var(--pink-light),var(--purple-light));display:flex;align-items:center;justify-content:center;font-size:48px;min-height:160px;border:1.5px solid rgba(244,167,185,.3);transition:transform .3s}.gal-item:hover{transform:scale(1.03)}
+.gal-item img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.gal-item:nth-child(1){grid-column:span 2;min-height:240px}.gal-item:nth-child(5){grid-column:span 2}
+.lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center}.lb.on{display:flex}
+.lb img{max-width:90vw;max-height:90vh;border-radius:16px;object-fit:contain}
+.lb-x{position:absolute;top:20px;right:20px;background:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#depoimentos{background:linear-gradient(135deg,var(--purple-light) 0%,var(--pink-light) 100%)}
+.tsti-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1100px;margin:0 auto}
+.tsti-card{background:#fff;border-radius:20px;padding:32px;box-shadow:var(--shadow);border:1.5px solid rgba(244,167,185,.2);transition:transform .3s}.tsti-card:hover{transform:translateY(-4px)}
+.tsti-stars{color:var(--yellow);font-size:16px;margin-bottom:16px}
+.tsti-txt{font-size:14.5px;color:var(--text-soft);line-height:1.8;margin-bottom:20px;font-style:italic;font-weight:300}
+.tsti-auth{display:flex;align-items:center;gap:12px}
+.auth-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:15px;font-family:'Playfair Display',serif;flex-shrink:0;overflow:hidden}.auth-av img{width:100%;height:100%;object-fit:cover}
+.auth-name{font-weight:600;font-size:14px;color:var(--text)}.auth-sub{font-size:12px;color:var(--text-soft)}
+#contato{background:#fff}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1000px;margin:0 auto}
+.contact-grid p{font-size:15px;color:var(--text-soft);line-height:1.8;margin-bottom:36px;font-weight:300}
+.btn-wa-big{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;text-decoration:none;padding:20px 40px;border-radius:50px;font-size:16px;font-weight:500;box-shadow:0 8px 28px rgba(37,211,102,.3);transition:all .3s}.btn-wa-big:hover{transform:translateY(-3px)}
+.chips{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--pink-light);color:var(--pink-deep);text-decoration:none;padding:10px 18px;border-radius:50px;font-size:13px;font-weight:500;border:1px solid rgba(244,167,185,.4);transition:all .2s}.chip:hover{background:var(--pink);color:#fff}
+.c-form{background:var(--cream);border-radius:24px;padding:40px;border:1.5px solid rgba(244,167,185,.25)}
+.fg{margin-bottom:20px}.fl{display:block;font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px}
+.fi,.fta{width:100%;padding:14px 18px;border:1.5px solid rgba(176,143,214,.25);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;outline:none;transition:border-color .2s}.fi:focus,.fta:focus{border-color:var(--purple)}.fta{height:120px;resize:vertical}
+.fsub{width:100%;padding:15px;background:linear-gradient(135deg,var(--purple-deep),var(--pink-deep));color:#fff;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .3s}.fsub:hover{opacity:.9;transform:translateY(-2px)}
+footer{background:var(--text);color:rgba(255,255,255,.7);padding:60px 48px 40px}
+.ft-g{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;max-width:1100px;margin:0 auto 48px}
+.ft-logo{font-family:'Dancing Script',cursive;font-size:28px;color:#fff;margin-bottom:14px}
+.ft-dsc{font-size:13.5px;line-height:1.8;max-width:280px}
+.ft-col h4{color:#fff;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+.ft-col ul{list-style:none}.ft-col ul li{margin-bottom:10px}
+.ft-col ul a{text-decoration:none;color:rgba(255,255,255,.6);font-size:14px;transition:color .2s}.ft-col ul a:hover{color:var(--pink)}
+.ft-bot{max-width:1100px;margin:0 auto;padding-top:28px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.ft-ig{color:var(--pink);text-decoration:none;font-weight:500}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+.toast{position:fixed;bottom:30px;right:30px;background:var(--text);color:#fff;padding:14px 24px;border-radius:14px;font-size:14px;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:9999;transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1)}.toast.show{transform:translateY(0);opacity:1}.toast.pink{background:linear-gradient(135deg,var(--purple-deep),var(--pink-deep))}
+/* loading skeleton */
+.skeleton{background:linear-gradient(90deg,#f0e6f6 25%,#e8d5f0 50%,#f0e6f6 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:12px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+/* MODAL */
+.mov{display:none;position:fixed;inset:0;background:rgba(61,44,62,.6);backdrop-filter:blur(6px);z-index:900;align-items:center;justify-content:center}.mov.on{display:flex}
+.mbox{background:#fff;border-radius:24px;padding:48px 40px;width:100%;max-width:420px;box-shadow:0 40px 100px rgba(61,44,62,.3);position:relative;animation:mIn .35s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes mIn{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.mx{position:absolute;top:20px;right:20px;width:32px;height:32px;background:var(--cream);border:none;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text-soft)}.mx:hover{background:var(--pink-light)}
+.m-icon{width:60px;height:60px;background:var(--purple-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 20px}
+.m-tit{font-family:'Playfair Display',serif;font-size:1.5rem;text-align:center;color:var(--text);margin-bottom:6px}
+.m-sub{text-align:center;font-size:13px;color:var(--text-soft);margin-bottom:28px}
+/* ADMIN PANEL */
+#adm{display:none;position:fixed;inset:0;z-index:800;flex-direction:column;background:var(--cream)}
+#adm.on{display:flex}
+.an{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:#fff;border-bottom:1px solid rgba(240,180,200,.35);flex-shrink:0}
+.an-tit{font-family:'Dancing Script',cursive;font-size:22px;color:var(--purple-deep)}
+.an-right{display:flex;gap:8px}
+.btn-exit,.btn-key{display:flex;align-items:center;gap:6px;background:var(--cream);border:1.5px solid var(--pink);color:var(--text-soft);padding:9px 18px;border-radius:50px;cursor:pointer;font-size:12.5px;font-weight:500;font-family:'DM Sans',sans-serif;transition:all .2s}.btn-exit:hover,.btn-key:hover{background:var(--pink-light)}
+.adm-lay{display:flex;height:calc(100vh - 57px);overflow:hidden}
+.adm-sb{width:210px;background:var(--cream2);border-right:1px solid rgba(240,180,200,.35);padding:20px 0;flex-shrink:0;overflow-y:auto}
+.sb-item{display:flex;align-items:center;gap:10px;padding:11px 22px;font-size:13px;font-weight:500;color:var(--text-soft);cursor:pointer;transition:all .2s;border-left:3px solid transparent}.sb-item:hover{background:var(--pink-light)}.sb-item.on{background:var(--purple-light);color:var(--purple-deep);border-left-color:var(--purple-deep)}
+.adm-main{flex:1;overflow-y:auto;padding:32px 36px;background:#fff}
+.pane{display:none}.pane.on{display:block}
+.pane-tit{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--text);margin-bottom:6px}
+.pane-sub{font-size:13px;color:var(--text-soft);margin-bottom:28px}
+.divider{height:1px;background:rgba(240,180,200,.4);margin:22px 0}
+.ai{width:100%;padding:10px 14px;border:1.5px solid rgba(176,143,214,.25);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--text);background:#fff;outline:none;transition:border-color .2s}.ai:focus{border-color:var(--purple)}
+.ata{width:100%;padding:10px 14px;border:1.5px solid rgba(176,143,214,.25);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--text);background:#fff;outline:none;resize:vertical;min-height:85px;transition:border-color .2s}.ata:focus{border-color:var(--purple)}
+.ag{margin-bottom:16px}.albl{display:block;font-size:12px;font-weight:600;color:var(--text-soft);margin-bottom:5px;letter-spacing:.3px}
+.btn-save{background:linear-gradient(135deg,var(--purple-deep),var(--pink-deep));color:#fff;border:none;padding:12px 26px;border-radius:11px;cursor:pointer;font-size:13.5px;font-weight:500;font-family:'DM Sans',sans-serif;transition:all .3s;box-shadow:0 4px 14px rgba(138,92,191,.25)}.btn-save:hover{opacity:.9;transform:translateY(-1px)}
+.btn-add{background:var(--purple-light);color:var(--purple-deep);border:1.5px solid rgba(176,143,214,.3);padding:10px 20px;border-radius:11px;cursor:pointer;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;transition:all .2s}.btn-add:hover{background:var(--purple);color:#fff}
+.btn-del{background:#fff0f3;color:#d63031;border:1.5px solid #ffb3c1;padding:7px 14px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;transition:all .2s}.btn-del:hover{background:#d63031;color:#fff}
+.iub{border:2px dashed rgba(176,143,214,.4);border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:all .3s;background:var(--cream);position:relative}.iub:hover{border-color:var(--purple);background:var(--purple-light)}
+.iub input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.iub-icon{font-size:28px;margin-bottom:6px}.iub-txt{font-size:12.5px;color:var(--text-soft);font-weight:500}
+.iup{width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-top:10px;display:none}
+.img-or{display:flex;align-items:center;gap:10px;margin:12px 0;color:var(--text-soft);font-size:12px}.img-or::before,.img-or::after{content:'';flex:1;height:1px;background:rgba(176,143,214,.3)}
+.svc-adm-card{background:var(--cream);border-radius:16px;padding:20px;border:1.5px solid rgba(244,167,185,.3);margin-bottom:16px}
+.svc-adm-hdr{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.svc-adm-hl{display:flex;align-items:center;gap:10px;font-weight:600;font-size:13.5px;color:var(--text)}
+.svc-adm-prev{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--pink-light),var(--purple-light));display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0}.svc-adm-prev img{width:100%;height:100%;object-fit:cover}
+.svc-adm-body{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.svc-adm-body.h{display:none}
+.gal-adm-g{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.gal-adm-item{border-radius:12px;overflow:hidden;border:1.5px solid rgba(244,167,185,.3);position:relative;background:linear-gradient(135deg,var(--pink-light),var(--purple-light));aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:32px}
+.gal-adm-item img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.gal-adm-del{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:26px;height:26px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#d63031;transition:all .2s}.gal-adm-del:hover{background:#d63031;color:#fff}
+.gal-adm-add{border-radius:12px;border:2px dashed rgba(176,143,214,.4);aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;position:relative;background:var(--cream);gap:6px;font-size:12px;color:var(--text-soft);font-weight:500}.gal-adm-add:hover{border-color:var(--purple);background:var(--purple-light)}
+.gal-adm-add input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.tst-adm-card{background:var(--cream);border-radius:14px;padding:20px;border:1.5px solid rgba(244,167,185,.3);margin-bottom:14px}
+.tst-adm-g{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+/* status badge */
+.db-status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-soft);padding:6px 14px;background:var(--cream);border-radius:50px;border:1px solid rgba(244,167,185,.3)}
+.db-dot{width:8px;height:8px;border-radius:50%;background:#ccc}.db-dot.ok{background:#25D366}.db-dot.err{background:#d63031}
+@media(max-width:768px){nav{padding:14px 16px}.nav-links{display:none}section{padding:70px 20px}.about-grid,.contact-grid,.ft-g{grid-template-columns:1fr;gap:40px}.gal-grid{grid-template-columns:1fr 1fr}.gal-item:nth-child(1),.gal-item:nth-child(5){grid-column:span 1}#hero{padding:120px 20px 60px}.c-form{padding:26px 18px}.adm-sb{width:160px}.adm-main{padding:20px 16px}.svc-adm-body{grid-template-columns:1fr}.tst-adm-g{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN SCREEN -->
+<div class="mov on" id="loginScreen" style="position:fixed;background:linear-gradient(135deg,var(--cream) 0%,var(--pink-light) 50%,var(--purple-light) 100%)">
+  <div class="mbox">
+    <div class="m-icon">🔐</div>
+    <h2 class="m-tit">Painel Admin</h2>
+    <p class="m-sub">Duya Personalizados — entre com seu e-mail e senha</p>
+    <form onsubmit="doLogin(event)">
+      <div class="fg"><label class="fl">Usuário</label><input type="text" class="fi" id="lUser" placeholder="admin" required autocomplete="username"></div>
+      <div class="fg" style="margin-top:12px"><label class="fl">Senha</label><input type="password" class="fi" id="lPass" placeholder="••••••••" required autocomplete="current-password"></div>
+      <button type="submit" class="fsub" style="margin-top:22px" id="loginBtn">Entrar ✨</button>
+      <p id="loginErr" style="color:#c0392b;font-size:13px;margin-top:12px;text-align:center"></p>
+    </form>
+    <p style="text-align:center;margin-top:18px;font-size:12.5px"><a href="/" style="color:var(--text-soft)">← Voltar ao site</a></p>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div class="mov" id="pwModal">
+  <div class="mbox">
+    <button class="mx" onclick="closePw()">✕</button>
+    <div class="m-icon">🔑</div>
+    <h2 class="m-tit">Alterar Senha</h2>
+    <p class="m-sub">Escolha uma nova senha de acesso</p>
+    <form onsubmit="doChangePw(event)">
+      <div class="fg"><label class="fl">Nova senha</label><input type="password" class="fi" id="pwNew" minlength="6" required></div>
+      <div class="fg" style="margin-top:10px"><label class="fl">Confirmar</label><input type="password" class="fi" id="pwCfm" minlength="6" required></div>
+      <button type="submit" class="fsub" style="margin-top:22px">Salvar nova senha</button>
+    </form>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adm">
+  <div class="an">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="an-tit">🌸 Painel Admin — Duya</div>
+      <div class="db-status"><div class="db-dot" id="dbDot"></div><span id="dbStatus">conectando...</span></div>
+    </div>
+    <div class="an-right">
+      <a class="btn-exit" href="/" target="_blank" rel="noopener" style="text-decoration:none">🌐 Ver site</a>
+      <button class="btn-key" onclick="openPw()">🔑 Alterar senha</button>
+      <button class="btn-exit" onclick="doLogout()">🚪 Sair</button>
+    </div>
+  </div>
+  <div class="adm-lay">
+    <div class="adm-sb">
+      <div class="sb-item on" onclick="showP('p-geral',this)"><span>⚙️</span> Geral</div>
+      <div class="sb-item" onclick="showP('p-hero',this)"><span>🏠</span> Hero</div>
+      <div class="sb-item" onclick="showP('p-sobre',this)"><span>🌸</span> Sobre</div>
+      <div class="sb-item" onclick="showP('p-svc',this)"><span>🛍️</span> Serviços</div>
+      <div class="sb-item" onclick="showP('p-gal',this)"><span>🖼️</span> Galeria</div>
+      <div class="sb-item" onclick="showP('p-tsti',this)"><span>⭐</span> Depoimentos</div>
+      <div class="sb-item" onclick="showP('p-cnt',this)"><span>📱</span> Contato</div>
+      <div class="sb-item" onclick="showP('p-ft',this)"><span>🔻</span> Rodapé</div>
+    </div>
+    <div class="adm-main">
+
+      <!-- GERAL -->
+      <div class="pane on" id="p-geral">
+        <div class="pane-tit">⚙️ Configurações Gerais</div>
+        <div class="pane-sub">Nome da marca, WhatsApp, Instagram e logo. Tudo salvo no Supabase.</div>
+        <div class="ag"><label class="albl">Nome do site / Marca</label><input class="ai" id="g-name" placeholder="Duya Personalizados"></div>
+        <div class="ag"><label class="albl">WhatsApp (só números com DDI — ex: 5582996785465)</label><input class="ai" id="g-wa" type="tel" placeholder="5582999999999"></div>
+        <div class="ag"><label class="albl">Instagram (só o @)</label><input class="ai" id="g-ig" placeholder="@Duya.personalizados"></div>
+        <div class="ag"><label class="albl">Logo (upload → salvo no Supabase Storage)</label>
+          <div class="iub"><input type="file" accept="image/*" onchange="upImg(event,'logo')"><div class="iub-icon">🌸</div><div class="iub-txt">Clique para enviar logo</div><img class="iup" id="prev-logo"></div>
+          <div class="img-or">ou cole uma URL</div>
+          <input class="ai" id="url-logo" placeholder="https://..." oninput="urlImg(this.value,'logo')">
+        </div>
+        <div class="divider"></div>
+        <button class="btn-save" onclick="saveGeral()">💾 Salvar configurações gerais</button>
+      </div>
+
+      <!-- HERO -->
+      <div class="pane" id="p-hero">
+        <div class="pane-tit">🏠 Seção Hero</div>
+        <div class="pane-sub">O primeiro impacto do site.</div>
+        <div class="ag"><label class="albl">Texto do badge</label><input class="ai" id="h-bdg"></div>
+        <div class="ag"><label class="albl">Título (use | para quebrar linha)</label><input class="ai" id="h-tit"></div>
+        <div class="ag"><label class="albl">Subtítulo</label><textarea class="ata" id="h-sub"></textarea></div>
+        <div class="divider"></div>
+        <button class="btn-save" onclick="saveHero()">💾 Salvar hero</button>
+      </div>
+
+      <!-- SOBRE -->
+      <div class="pane" id="p-sobre">
+        <div class="pane-tit">🌸 Seção Sobre</div>
+        <div class="pane-sub">Conta a história da Duya para seus clientes.</div>
+        <div class="ag"><label class="albl">Foto (upload → Supabase Storage)</label>
+          <div class="iub"><input type="file" accept="image/*" onchange="upImg(event,'about')"><div class="iub-icon">👩‍👧</div><div class="iub-txt">Clique para enviar foto</div><img class="iup" id="prev-about"></div>
+          <div class="img-or">ou cole uma URL</div>
+          <input class="ai" id="url-about" placeholder="https://..." oninput="urlImg(this.value,'about')">
+        </div>
+        <div class="ag"><label class="albl">Label</label><input class="ai" id="s-lbl"></div>
+        <div class="ag"><label class="albl">Título</label><input class="ai" id="s-tit"></div>
+        <div class="ag"><label class="albl">Parágrafo 1</label><textarea class="ata" id="s-p1"></textarea></div>
+        <div class="ag"><label class="albl">Parágrafo 2</label><textarea class="ata" id="s-p2"></textarea></div>
+        <div class="ag"><label class="albl">Tags (separadas por vírgula)</label><input class="ai" id="s-tags" placeholder="🎉 Festas, 🎂 Aniversários"></div>
+        <div class="divider"></div>
+        <button class="btn-save" onclick="saveSobre()">💾 Salvar sobre</button>
+      </div>
+
+      <!-- SERVIÇOS -->
+      <div class="pane" id="p-svc">
+        <div class="pane-tit">🛍️ Serviços</div>
+        <div class="pane-sub">Adicione, edite e remova cards. Imagens vão pro Supabase Storage.</div>
+        <div class="ag"><label class="albl">Título da seção</label><input class="ai" id="ss-tit"></div>
+        <div class="ag"><label class="albl">Descrição da seção</label><input class="ai" id="ss-dsc"></div>
+        <button class="btn-save" style="margin-bottom:20px" onclick="saveSvcSec()">💾 Salvar título/descrição</button>
+        <div class="divider"></div>
+        <div id="admSvcList"></div>
+        <button class="btn-add" onclick="addSvc()">+ Adicionar serviço</button>
+      </div>
+
+      <!-- GALERIA -->
+      <div class="pane" id="p-gal">
+        <div class="pane-tit">🖼️ Galeria</div>
+        <div class="pane-sub">Upload de fotos → salvo no Supabase Storage automaticamente.</div>
+        <div class="ag"><label class="albl">Título da seção</label><input class="ai" id="gs-tit"></div>
+        <div class="ag"><label class="albl">Descrição da seção</label><input class="ai" id="gs-dsc"></div>
+        <button class="btn-save" style="margin-bottom:20px" onclick="saveGalSec()">💾 Salvar título/descrição</button>
+        <div class="divider"></div>
+        <div class="gal-adm-g" id="galAdm"></div>
+      </div>
+
+      <!-- DEPOIMENTOS -->
+      <div class="pane" id="p-tsti">
+        <div class="pane-tit">⭐ Depoimentos</div>
+        <div class="pane-sub">Gerencie os depoimentos de clientes.</div>
+        <div class="ag"><label class="albl">Título da seção</label><input class="ai" id="ts-tit"></div>
+        <div class="ag"><label class="albl">Descrição da seção</label><input class="ai" id="ts-dsc"></div>
+        <button class="btn-save" style="margin-bottom:20px" onclick="saveTstiSec()">💾 Salvar título/descrição</button>
+        <div class="divider"></div>
+        <div id="admTstiList"></div>
+        <button class="btn-add" onclick="addTsti()">+ Adicionar depoimento</button>
+      </div>
+
+      <!-- CONTATO -->
+      <div class="pane" id="p-cnt">
+        <div class="pane-tit">📱 Seção Contato</div>
+        <div class="pane-sub">Textos da seção de contato.</div>
+        <div class="ag"><label class="albl">Título</label><input class="ai" id="c-tit"></div>
+        <div class="ag"><label class="albl">Descrição</label><textarea class="ata" id="c-dsc"></textarea></div>
+        <div class="divider"></div>
+        <button class="btn-save" onclick="saveCnt()">💾 Salvar contato</button>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="pane" id="p-ft">
+        <div class="pane-tit">🔻 Rodapé</div>
+        <div class="pane-sub">Descrição e copyright do rodapé.</div>
+        <div class="ag"><label class="albl">Descrição</label><textarea class="ata" id="ft-dsc-in"></textarea></div>
+        <div class="ag"><label class="albl">Copyright</label><input class="ai" id="ft-cpy-in"></div>
+        <div class="divider"></div>
+        <button class="btn-save" onclick="saveFt()">💾 Salvar rodapé</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script>
+// ══════════════════════════════════════
+// SUPABASE CONFIG
+// ══════════════════════════════════════
+const SB_URL = 'https://ewjluhwsrfpjdxlapfcu.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3amx1aHdzcmZwamR4bGFwZmN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3ODIyOTMsImV4cCI6MjA4OTM1ODI5M30.A8ihF9o5pHMJ1i84mHiTcHs_o6_Yc7ZMlPOGFXqWgQo';
+const BUCKET = 'duya';
+const LOGIN_DOMAIN = 'duya-admin.local'; // usuário digitado vira usuario@duya-admin.local por baixo dos panos
+
+// ── Session (real Supabase Auth) ──
+let SESSION = null; // { access_token, refresh_token, user }
+
+function authHeader() {
+  return SESSION ? `Bearer ${SESSION.access_token}` : `Bearer ${SB_KEY}`;
+}
+
+async function restoreSession() {
+  try {
+    const raw = sessionStorage.getItem('duya_session');
+    if (!raw) return false;
+    SESSION = JSON.parse(raw);
+    return true;
+  } catch { return false; }
+}
+
+function saveSession() { sessionStorage.setItem('duya_session', JSON.stringify(SESSION)); }
+function clearSession() { SESSION = null; sessionStorage.removeItem('duya_session'); }
+
+async function doLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginErr');
+  err.textContent = '';
+  btn.textContent = 'Entrando...'; btn.disabled = true;
+  try {
+    const username = document.getElementById('lUser').value.trim().toLowerCase();
+    const email = `${username}@${LOGIN_DOMAIN}`;
+    const password = document.getElementById('lPass').value;
+    const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=password`, {
+      method: 'POST',
+      headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error_description || data.msg || 'Credenciais inválidas');
+    SESSION = { access_token: data.access_token, refresh_token: data.refresh_token, user: data.user };
+    saveSession();
+    await enterAdmin();
+  } catch (ex) {
+    err.textContent = '❌ ' + ex.message;
+  }
+  btn.textContent = 'Entrar ✨'; btn.disabled = false;
+}
+
+function doLogout() {
+  clearSession();
+  document.getElementById('adm').classList.remove('on');
+  document.getElementById('loginScreen').classList.add('on');
+}
+
+async function enterAdmin() {
+  document.getElementById('loginScreen').classList.remove('on');
+  document.getElementById('adm').classList.add('on');
+  toast('🔄 Sincronizando com Supabase...');
+  try {
+    await loadAll();
+    fillAdm();
+    toast('✅ Dados carregados!', true);
+  } catch (e) {
+    toast('❌ Sessão expirada ou sem permissão. Faça login novamente.');
+    doLogout();
+  }
+}
+
+function openPw() { document.getElementById('pwModal').classList.add('on'); }
+function closePw() { document.getElementById('pwModal').classList.remove('on'); }
+async function doChangePw(e) {
+  e.preventDefault();
+  const n = document.getElementById('pwNew').value, cf = document.getElementById('pwCfm').value;
+  if (n !== cf) { toast('❌ As senhas não coincidem'); return; }
+  try {
+    const r = await fetch(`${SB_URL}/auth/v1/user`, {
+      method: 'PUT',
+      headers: { apikey: SB_KEY, Authorization: authHeader(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: n })
+    });
+    if (!r.ok) throw new Error((await r.json()).msg || 'Erro ao alterar senha');
+    closePw(); toast('✅ Senha alterada!', true);
+  } catch (ex) { toast('❌ ' + ex.message); }
+}
+
+// In-memory state (loaded from Supabase)
+let CFG = {};      // site_config key→value
+let SVCS = [];     // services[]
+let GAL = [];      // gallery[]
+let TSTIS = [];    // testimonials[]
+
+// ── Supabase fetch helpers (authenticated) ──
+async function sbGet(table, order) {
+  let url = `${SB_URL}/rest/v1/${table}?select=*`;
+  if (order) url += `&order=${order}`;
+  const r = await fetch(url, { headers: { apikey: SB_KEY, Authorization: authHeader() } });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+async function sbUpsert(table, data) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { apikey: SB_KEY, Authorization: authHeader(), 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=representation' },
+    body: JSON.stringify(data)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+async function sbDelete(table, id) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'DELETE',
+    headers: { apikey: SB_KEY, Authorization: authHeader() }
+  });
+  if (!r.ok) throw new Error(await r.text());
+}
+
+async function sbUpdate(table, id, data) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: { apikey: SB_KEY, Authorization: authHeader(), 'Content-Type': 'application/json', Prefer: 'return=representation' },
+    body: JSON.stringify(data)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+async function sbInsert(table, data) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { apikey: SB_KEY, Authorization: authHeader(), 'Content-Type': 'application/json', Prefer: 'return=representation' },
+    body: JSON.stringify(data)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+// ── Supabase Storage upload (authenticated) ──
+async function uploadToStorage(file, path) {
+  const r = await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${path}`, {
+    method: 'POST',
+    headers: { apikey: SB_KEY, Authorization: authHeader(), 'Content-Type': file.type, 'x-upsert': 'true' },
+    body: file
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return `${SB_URL}/storage/v1/object/public/${BUCKET}/${path}`;
+}
+
+// ── Config helpers ──
+function cfg(key, def = '') { return CFG[key] || def; }
+async function setCfgBatch(pairs) {
+  for (const [key, value] of pairs) { CFG[key] = value; }
+  await sbUpsert('duya_config', pairs.map(([key, value]) => ({ key, value })));
+}
+
+// ══════════════════════════════════════
+// LOAD DATA FROM SUPABASE
+// ══════════════════════════════════════
+async function loadAll() {
+  const [cfgRows, svcs, gal, tstis] = await Promise.all([
+    sbGet('duya_config'),
+    sbGet('duya_services', 'order_index.asc,created_at.asc'),
+    sbGet('duya_gallery', 'order_index.asc,created_at.asc'),
+    sbGet('duya_testimonials', 'order_index.asc,created_at.asc')
+  ]);
+  CFG = Object.fromEntries(cfgRows.map(r => [r.key, r.value]));
+  SVCS = svcs;
+  GAL = gal;
+  TSTIS = tstis;
+}
+
+// ══════════════════════════════════════
+// ADMIN PANEL
+// ══════════════════════════════════════
+function showP(id, el) {
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  el.classList.add('on');
+}
+
+function fillAdm() {
+  // geral
+  document.getElementById('g-name').value = cfg('name', '');
+  document.getElementById('g-wa').value = cfg('wa', '');
+  document.getElementById('g-ig').value = cfg('ig', '');
+  const logo = cfg('logo');
+  if (logo) { const p = document.getElementById('prev-logo'); p.src = logo; p.style.display = 'block'; document.getElementById('url-logo').value = logo; }
+  // hero
+  document.getElementById('h-bdg').value = cfg('hero_badge', '');
+  document.getElementById('h-tit').value = cfg('hero_title', '');
+  document.getElementById('h-sub').value = cfg('hero_sub', '');
+  // sobre
+  const si = cfg('sobre_img');
+  if (si) { const p = document.getElementById('prev-about'); p.src = si; p.style.display = 'block'; document.getElementById('url-about').value = si; }
+  document.getElementById('s-lbl').value = cfg('sobre_label', '');
+  document.getElementById('s-tit').value = cfg('sobre_title', '');
+  document.getElementById('s-p1').value = cfg('sobre_p1', '');
+  document.getElementById('s-p2').value = cfg('sobre_p2', '');
+  document.getElementById('s-tags').value = cfg('sobre_tags', '');
+  // svc
+  document.getElementById('ss-tit').value = cfg('svc_sec_title', '');
+  document.getElementById('ss-dsc').value = cfg('svc_sec_desc', '');
+  // gal
+  document.getElementById('gs-tit').value = cfg('gal_sec_title', '');
+  document.getElementById('gs-dsc').value = cfg('gal_sec_desc', '');
+  // tsti
+  document.getElementById('ts-tit').value = cfg('tsti_sec_title', '');
+  document.getElementById('ts-dsc').value = cfg('tsti_sec_desc', '');
+  // contato
+  document.getElementById('c-tit').value = cfg('contato_title', '');
+  document.getElementById('c-dsc').value = cfg('contato_desc', '');
+  // footer
+  document.getElementById('ft-dsc-in').value = cfg('footer_desc', '');
+  document.getElementById('ft-cpy-in').value = cfg('footer_copy', '');
+  rAdmSvc(); rAdmGal(); rAdmTsti();
+}
+
+// ── SAVE FUNCTIONS ──
+async function saveGeral() {
+  const btn = event.target; btn.textContent = '⏳ Salvando...'; btn.disabled = true;
+  try {
+    await setCfgBatch([
+      ['name', document.getElementById('g-name').value],
+      ['wa', document.getElementById('g-wa').value.replace(/\D/g, '')],
+      ['ig', document.getElementById('g-ig').value],
+      ['logo', document.getElementById('url-logo').value]
+    ]);
+    toast('✅ Geral salvo! Já está no site.', true);
+  } catch (e) { toast('❌ Erro: ' + e.message); }
+  btn.textContent = '💾 Salvar configurações gerais'; btn.disabled = false;
+}
+
+async function saveHero() {
+  const btn = event.target; btn.textContent = '⏳...'; btn.disabled = true;
+  try {
+    await setCfgBatch([
+      ['hero_badge', document.getElementById('h-bdg').value],
+      ['hero_title', document.getElementById('h-tit').value],
+      ['hero_sub', document.getElementById('h-sub').value]
+    ]);
+    toast('✅ Hero salvo!', true);
+  } catch (e) { toast('❌ Erro: ' + e.message); }
+  btn.textContent = '💾 Salvar hero'; btn.disabled = false;
+}
+
+async function saveSobre() {
+  const btn = event.target; btn.textContent = '⏳...'; btn.disabled = true;
+  try {
+    await setCfgBatch([
+      ['sobre_label', document.getElementById('s-lbl').value],
+      ['sobre_title', document.getElementById('s-tit').value],
+      ['sobre_p1', document.getElementById('s-p1').value],
+      ['sobre_p2', document.getElementById('s-p2').value],
+      ['sobre_tags', document.getElementById('s-tags').value],
+      ['sobre_img', document.getElementById('url-about').value]
+    ]);
+    toast('✅ Sobre salvo!', true);
+  } catch (e) { toast('❌ Erro: ' + e.message); }
+  btn.textContent = '💾 Salvar sobre'; btn.disabled = false;
+}
+
+async function saveSvcSec() {
+  try {
+    await setCfgBatch([
+      ['svc_sec_title', document.getElementById('ss-tit').value],
+      ['svc_sec_desc', document.getElementById('ss-dsc').value]
+    ]);
+    toast('✅ Seção salva!', true);
+  } catch (e) { toast('❌ Erro: ' + e.message); }
+}
+
+async function saveGalSec() {
+  try {
+    await setCfgBatch([
+      ['gal_sec_title', document.getElementById('gs-tit').value],
+      ['gal_sec_desc', document.getElementById('gs-dsc').value]
+    ]);
+    toast('✅ Galeria salva!', true);
+  } catch (e) { toast('❌ Erro: ' + e.message); }
+}
+
+async function saveTstiSec() {
+  try {
+    await setCfgBatch([
+      ['tsti_sec_title', document.getElementById('ts-tit').value],
+      ['tsti_sec_desc', document.getElementById('ts-dsc').value]
+    ]);
+    toast('✅ Seção salva!', true);
+  } catch (e) { toast('❌ Erro: ' + e.message); }
+}
+
+async function saveCnt() {
+  try {
+    await setCfgBatch([
+      ['contato_title', document.getElementById('c-tit').value],
+      ['contato_desc', document.getElementById('c-dsc').value]
+    ]);
+    toast('✅ Contato salvo!', true);
+  } catch (e) { toast('❌ Erro: ' + e.message); }
+}
+
+async function saveFt() {
+  try {
+    await setCfgBatch([
+      ['footer_desc', document.getElementById('ft-dsc-in').value],
+      ['footer_copy', document.getElementById('ft-cpy-in').value]
+    ]);
+    toast('✅ Rodapé salvo!', true);
+  } catch (e) { toast('❌ Erro: ' + e.message); }
+}
+
+// ── IMAGE UPLOAD (to Supabase Storage) ──
+async function upImg(e, type) {
+  const file = e.target.files[0]; if (!file) return;
+  toast('⏳ Enviando imagem...');
+  try {
+    const path = `${type}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+    const url = await uploadToStorage(file, path);
+    if (type === 'logo') { CFG['logo'] = url; showPrev('prev-logo', url, 'url-logo'); }
+    if (type === 'about') { CFG['sobre_img'] = url; showPrev('prev-about', url, 'url-about'); }
+    toast('✅ Imagem enviada! Clique em Salvar.', true);
+  } catch (err) { toast('❌ Erro no upload: ' + err.message); }
+}
+
+function urlImg(val, type) {
+  if (type === 'logo') { CFG['logo'] = val; showPrev('prev-logo', val, 'url-logo'); }
+  if (type === 'about') { CFG['sobre_img'] = val; showPrev('prev-about', val, 'url-about'); }
+}
+
+function showPrev(pid, src, uid) {
+  const p = document.getElementById(pid);
+  if (src) { p.src = src; p.style.display = 'block'; } else { p.style.display = 'none'; }
+  if (uid) { const u = document.getElementById(uid); if (u) u.value = src || ''; }
+}
+
+// ── SERVICES ADMIN ──
+function rAdmSvc() {
+  document.getElementById('admSvcList').innerHTML = SVCS.map((s, i) => `
+    <div class="svc-adm-card">
+      <div class="svc-adm-hdr" onclick="togSvc('sbody-${s.id}','sarr-${s.id}')">
+        <div class="svc-adm-hl">
+          <div class="svc-adm-prev" id="sadmprev-${s.id}">${s.image_url ? `<img src="${s.image_url}" alt="">` : (s.emoji || '🎁')}</div>
+          <span>${s.title || 'Serviço'}</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:12px;color:var(--text-soft)">${s.price || ''}</span>
+          <button class="btn-del" onclick="event.stopPropagation();rmSvc('${s.id}')">🗑️</button>
+          <span style="color:var(--text-soft);font-size:20px" id="sarr-${s.id}">›</span>
+        </div>
+      </div>
+      <div class="svc-adm-body h" id="sbody-${s.id}">
+        <div>
+          <div class="ag"><label class="albl">Imagem (upload → Storage)</label>
+            <div class="iub" style="padding:14px">
+              <input type="file" accept="image/*" onchange="upSvcImg(event,'${s.id}')">
+              <div class="iub-icon" style="font-size:22px">📸</div>
+              <div class="iub-txt" style="font-size:12px">Clique para enviar</div>
+              ${s.image_url ? `<img src="${s.image_url}" style="width:100%;max-height:90px;object-fit:cover;border-radius:8px;margin-top:8px">` : ''}
+            </div>
+            <div class="img-or" style="margin:8px 0">ou URL</div>
+            <input class="ai" value="${s.image_url || ''}" placeholder="https://..." oninput="updSvcField('${s.id}','image_url',this.value)">
+          </div>
+          <div class="ag"><label class="albl">Emoji (se sem imagem)</label><input class="ai" value="${s.emoji || ''}" oninput="updSvcField('${s.id}','emoji',this.value)"></div>
+          <div class="ag"><label class="albl">Badge</label><input class="ai" value="${s.badge || ''}" oninput="updSvcField('${s.id}','badge',this.value)"></div>
+          <div class="ag"><label class="albl">Ribbon (ex: ⭐ Popular)</label><input class="ai" value="${s.ribbon || ''}" oninput="updSvcField('${s.id}','ribbon',this.value)"></div>
+        </div>
+        <div>
+          <div class="ag"><label class="albl">Título</label><input class="ai" value="${s.title || ''}" oninput="updSvcField('${s.id}','title',this.value)"></div>
+          <div class="ag"><label class="albl">Descrição</label><textarea class="ata" oninput="updSvcField('${s.id}','description',this.value)">${s.description || ''}</textarea></div>
+          <div class="ag"><label class="albl">Preço</label><input class="ai" value="${s.price || ''}" oninput="updSvcField('${s.id}','price',this.value)"></div>
+          <div class="ag"><label class="albl">Período</label><input class="ai" value="${s.period || ''}" oninput="updSvcField('${s.id}','period',this.value)"></div>
+          <button class="btn-save" onclick="saveSvc('${s.id}')">💾 Salvar no Supabase</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function togSvc(bid, aid) {
+  const b = document.getElementById(bid), a = document.getElementById(aid);
+  if (!b) return;
+  b.classList.toggle('h');
+  a.textContent = b.classList.contains('h') ? '›' : '⌄';
+}
+
+function updSvcField(id, field, value) {
+  const s = SVCS.find(x => x.id === id);
+  if (s) s[field] = value;
+  if (field === 'image_url') {
+    const prev = document.getElementById(`sadmprev-${id}`);
+    if (prev) prev.innerHTML = value ? `<img src="${value}" alt="">` : (s?.emoji || '🎁');
+  }
+}
+
+async function upSvcImg(e, id) {
+  const file = e.target.files[0]; if (!file) return;
+  toast('⏳ Enviando imagem...');
+  try {
+    const path = `services/${id}-${Date.now()}.${file.name.split('.').pop()}`;
+    const url = await uploadToStorage(file, path);
+    updSvcField(id, 'image_url', url);
+    rAdmSvc();
+    toast('✅ Imagem enviada! Clique em Salvar.', true);
+  } catch (err) { toast('❌ Erro: ' + err.message); }
+}
+
+async function saveSvc(id) {
+  const s = SVCS.find(x => x.id === id); if (!s) return;
+  const btn = event.target; btn.textContent = '⏳...'; btn.disabled = true;
+  try {
+    await sbUpdate('duya_services', id, {
+      emoji: s.emoji, badge: s.badge, title: s.title,
+      description: s.description, price: s.price,
+      period: s.period, ribbon: s.ribbon, image_url: s.image_url
+    });
+    toast('✅ Serviço salvo!', true);
+  } catch (err) { toast('❌ Erro: ' + err.message); }
+  btn.textContent = '💾 Salvar no Supabase'; btn.disabled = false;
+}
+
+async function addSvc() {
+  const btn = event.target; btn.textContent = '⏳...'; btn.disabled = true;
+  try {
+    const rows = await sbInsert('duya_services', { emoji: '🎁', badge: 'Novo', title: 'Novo Serviço', description: 'Descrição do serviço.', price: 'R$ 0', period: 'por unidade', ribbon: '', image_url: '', order_index: SVCS.length });
+    SVCS.push(rows[0]);
+    rAdmSvc();
+    toast('✅ Serviço adicionado!', true);
+  } catch (err) { toast('❌ Erro: ' + err.message); }
+  btn.textContent = '+ Adicionar serviço'; btn.disabled = false;
+}
+
+async function rmSvc(id) {
+  if (!confirm('Remover este serviço?')) return;
+  try {
+    await sbDelete('duya_services', id);
+    SVCS = SVCS.filter(x => x.id !== id);
+    rAdmSvc(); toast('🗑️ Serviço removido');
+  } catch (err) { toast('❌ Erro: ' + err.message); }
+}
+
+// ── GALLERY ADMIN ──
+function rAdmGal() {
+  const g = document.getElementById('galAdm');
+  let h = GAL.map(item => `
+    <div class="gal-adm-item">
+      <img src="${item.image_url}" alt="">
+      <button class="gal-adm-del" onclick="rmGal('${item.id}')">✕</button>
+    </div>`).join('');
+  h += `<div class="gal-adm-add"><input type="file" accept="image/*" multiple onchange="addGalImgs(event)"><span style="font-size:26px">📷</span><span>Adicionar foto</span></div>`;
+  g.innerHTML = h;
+}
+
+async function addGalImgs(e) {
+  const files = Array.from(e.target.files);
+  toast(`⏳ Enviando ${files.length} imagem(ns)...`);
+  try {
+    for (const file of files) {
+      const path = `gallery/${Date.now()}-${Math.random().toString(36).substr(2, 6)}.${file.name.split('.').pop()}`;
+      const url = await uploadToStorage(file, path);
+      const rows = await sbInsert('duya_gallery', { image_url: url, order_index: GAL.length });
+      GAL.push(rows[0]);
+    }
+    rAdmGal();
+    toast('✅ Fotos adicionadas!', true);
+  } catch (err) { toast('❌ Erro: ' + err.message); }
+}
+
+async function rmGal(id) {
+  try {
+    await sbDelete('duya_gallery', id);
+    GAL = GAL.filter(x => x.id !== id);
+    rAdmGal(); toast('🗑️ Foto removida');
+  } catch (err) { toast('❌ Erro: ' + err.message); }
+}
+
+// ── TESTIMONIALS ADMIN ──
+function rAdmTsti() {
+  const grads = ['linear-gradient(135deg,var(--pink),var(--purple))', 'linear-gradient(135deg,var(--purple),var(--pink))', 'linear-gradient(135deg,#f5d76e,var(--pink-deep))'];
+  document.getElementById('admTstiList').innerHTML = TSTIS.map((t, i) => `
+    <div class="tst-adm-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="auth-av" style="width:36px;height:36px;font-size:12px;background:${grads[i % 3]}">${t.image_url ? `<img src="${t.image_url}" alt="">` : (t.name || '?').substring(0, 2).toUpperCase()}</div>
+          <strong style="font-size:13.5px">${t.name || 'Depoimento ' + (i + 1)}</strong>
+        </div>
+        <button class="btn-del" onclick="rmTsti('${t.id}')">🗑️ Remover</button>
+      </div>
+      <div class="tst-adm-g">
+        <div>
+          <div class="ag"><label class="albl">Foto (upload)</label>
+            <div class="iub" style="padding:14px">
+              <input type="file" accept="image/*" onchange="upTstiImg(event,'${t.id}')">
+              <div class="iub-icon" style="font-size:20px">👤</div>
+              <div class="iub-txt" style="font-size:12px">Clique para enviar</div>
+              ${t.image_url ? `<img src="${t.image_url}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;margin-top:8px">` : ''}
+            </div>
+            <div class="img-or" style="margin:8px 0">ou URL</div>
+            <input class="ai" value="${t.image_url || ''}" placeholder="https://..." oninput="updTstiField('${t.id}','image_url',this.value)">
+          </div>
+          <div class="ag"><label class="albl">Nome</label><input class="ai" value="${t.name || ''}" oninput="updTstiField('${t.id}','name',this.value)"></div>
+          <div class="ag"><label class="albl">Subtítulo</label><input class="ai" value="${t.subtitle || ''}" oninput="updTstiField('${t.id}','subtitle',this.value)"></div>
+          <div class="ag"><label class="albl">Estrelas (1-5)</label><input class="ai" type="number" min="1" max="5" value="${t.stars || 5}" oninput="updTstiField('${t.id}','stars',+this.value)"></div>
+        </div>
+        <div>
+          <div class="ag" style="height:calc(100% - 52px)"><label class="albl">Depoimento</label><textarea class="ata" style="min-height:150px" oninput="updTstiField('${t.id}','text',this.value)">${t.text || ''}</textarea></div>
+          <button class="btn-save" onclick="saveTsti('${t.id}')">💾 Salvar no Supabase</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function updTstiField(id, field, value) {
+  const t = TSTIS.find(x => x.id === id);
+  if (t) t[field] = value;
+}
+
+async function upTstiImg(e, id) {
+  const file = e.target.files[0]; if (!file) return;
+  toast('⏳ Enviando foto...');
+  try {
+    const path = `testimonials/${id}-${Date.now()}.${file.name.split('.').pop()}`;
+    const url = await uploadToStorage(file, path);
+    updTstiField(id, 'image_url', url);
+    rAdmTsti();
+    toast('✅ Foto enviada! Clique em Salvar.', true);
+  } catch (err) { toast('❌ Erro: ' + err.message); }
+}
+
+async function saveTsti(id) {
+  const t = TSTIS.find(x => x.id === id); if (!t) return;
+  const btn = event.target; btn.textContent = '⏳...'; btn.disabled = true;
+  try {
+    await sbUpdate('duya_testimonials', id, { name: t.name, subtitle: t.subtitle, text: t.text, stars: t.stars, image_url: t.image_url });
+    toast('✅ Depoimento salvo!', true);
+  } catch (err) { toast('❌ Erro: ' + err.message); }
+  btn.textContent = '💾 Salvar no Supabase'; btn.disabled = false;
+}
+
+async function addTsti() {
+  const btn = event.target; btn.textContent = '⏳...'; btn.disabled = true;
+  try {
+    const rows = await sbInsert('duya_testimonials', { name: '', subtitle: '', text: '', stars: 5, image_url: '', order_index: TSTIS.length });
+    TSTIS.push(rows[0]);
+    rAdmTsti();
+    toast('✅ Depoimento adicionado!', true);
+  } catch (err) { toast('❌ Erro: ' + err.message); }
+  btn.textContent = '+ Adicionar depoimento'; btn.disabled = false;
+}
+
+async function rmTsti(id) {
+  if (!confirm('Remover este depoimento?')) return;
+  try {
+    await sbDelete('duya_testimonials', id);
+    TSTIS = TSTIS.filter(x => x.id !== id);
+    rAdmTsti(); toast('🗑️ Removido');
+  } catch (err) { toast('❌ Erro: ' + err.message); }
+}
+
+// ── TOAST ──
+function toast(msg, pink = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast' + (pink ? ' pink' : '');
+  setTimeout(() => t.classList.add('show'), 10);
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── CLOSE MODAL (click outside) ──
+document.getElementById('pwModal').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('on'); });
+
+// ── INIT ──
+(async () => {
+  const has = await restoreSession();
+  if (has) { await enterAdmin(); }
+})();
+</script>
+</body>
+</html>
